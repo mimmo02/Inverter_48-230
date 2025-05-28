@@ -1,0 +1,9 @@
+../Core/Src/display_uart_console.c:81:6:huart3TxCpltCallback	0	static
+../Core/Src/display_uart_console.c:97:6:huart3RxCpltCallback	16	static
+../Core/Src/display_uart_console.c:30:6:DisplayMessageMeas	88	static
+../Core/Src/display_uart_console.c:44:6:DisplayMessageInit	8	static
+../Core/Src/display_uart_console.c:51:6:DisplayMessageRun	8	static
+../Core/Src/display_uart_console.c:58:6:DisplayMessageFault	8	static
+../Core/Src/display_uart_console.c:65:6:DisplayMessageStop	8	static
+../Core/Src/display_uart_console.c:87:6:huart3RxEventCallback	0	static
+../Core/Src/display_uart_console.c:155:6:InitDisplayUartConsole	4	static

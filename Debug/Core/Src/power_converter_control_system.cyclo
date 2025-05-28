@@ -1,0 +1,10 @@
+../Core/Src/power_converter_control_system.c:318:6:ADCErrorCallback	1
+../Core/Src/power_converter_control_system.c:326:6:ADCHalfCompleteCallback	1
+../Core/Src/power_converter_control_system.c:51:6:StartPWMFan	1
+../Core/Src/power_converter_control_system.c:60:6:StartPWM	1
+../Core/Src/power_converter_control_system.c:85:6:StopPWM	1
+../Core/Src/power_converter_control_system.c:163:6:ADCCompleteCallback	20
+../Core/Src/power_converter_control_system.c:107:6:InitConverterControlSystemPeripherals	1
+../Core/Src/power_converter_control_system.c:146:6:InitControlProcess	1
+../Core/Src/power_converter_control_system.c:336:6:HAL_ADC_ConvCpltCallback	1
+../Core/Src/power_converter_control_system.c:343:6:LogMeasurementsExample	1

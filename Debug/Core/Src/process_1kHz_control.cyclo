@@ -1,0 +1,2 @@
+../Core/Src/process_1kHz_control.c:22:6:HAL_IncTick	3
+../Core/Src/process_1kHz_control.c:45:6:IdleProcess	1
