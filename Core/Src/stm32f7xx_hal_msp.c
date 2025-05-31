@@ -111,19 +111,19 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3
+    PA5     ------> ADC1_IN5
     PA6     ------> ADC1_IN6
-    PC4     ------> ADC1_IN14
     PC5     ------> ADC1_IN15
     PB1     ------> ADC1_IN9
     */
     GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_4|GPIO_PIN_5;
+                          |GPIO_PIN_5;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
     GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_6;
+                          |GPIO_PIN_5|GPIO_PIN_6;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -279,16 +279,16 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
     PA1     ------> ADC1_IN1
     PA2     ------> ADC1_IN2
     PA3     ------> ADC1_IN3
+    PA5     ------> ADC1_IN5
     PA6     ------> ADC1_IN6
-    PC4     ------> ADC1_IN14
     PC5     ------> ADC1_IN15
     PB1     ------> ADC1_IN9
     */
     HAL_GPIO_DeInit(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_4|GPIO_PIN_5);
+                          |GPIO_PIN_5);
 
     HAL_GPIO_DeInit(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_6);
+                          |GPIO_PIN_5|GPIO_PIN_6);
 
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_1);
 
@@ -457,9 +457,8 @@ void HAL_DAC_MspInit(DAC_HandleTypeDef* hdac)
     __HAL_RCC_GPIOA_CLK_ENABLE();
     /**DAC GPIO Configuration
     PA4     ------> DAC_OUT1
-    PA5     ------> DAC_OUT2
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+    GPIO_InitStruct.Pin = GPIO_PIN_4;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -489,9 +488,8 @@ void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
 
     /**DAC GPIO Configuration
     PA4     ------> DAC_OUT1
-    PA5     ------> DAC_OUT2
     */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_4|GPIO_PIN_5);
+    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_4);
 
   /* USER CODE BEGIN DAC_MspDeInit 1 */
 

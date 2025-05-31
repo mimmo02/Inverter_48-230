@@ -1,5 +1,5 @@
 #MicroXplorer Configuration settings - do not modify
-ADC1.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_14
+ADC1.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_5
 ADC1.Channel-1\#ChannelRegularConversion=ADC_CHANNEL_6
 ADC1.Channel-2\#ChannelRegularConversion=ADC_CHANNEL_3
 ADC1.Channel-3\#ChannelRegularConversion=ADC_CHANNEL_13
@@ -395,12 +395,10 @@ PD2.Locked=true
 PD2.Signal=GPIO_Input
 PD3.Locked=true
 PD3.Signal=GPIO_Output
-PD4.GPIOParameters=GPIO_PuPd
-PD4.GPIO_PuPd=GPIO_NOPULL
 PD4.Locked=true
-PD4.Signal=GPIO_Input
+PD4.Signal=GPIO_Output
 PD5.Locked=true
-PD5.Signal=GPIO_Output
+PD5.Signal=GPIO_Input
 PD6.Locked=true
 PD6.Signal=GPIO_Input
 PD7.Locked=true
