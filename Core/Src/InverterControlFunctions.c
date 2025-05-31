@@ -42,9 +42,12 @@
 
 // analog measurement constants
 #define ADC_OFFSET	    1.65		// [V] (from PeLab interface PCB - differential measurement)
-#define GAIN_MEAS_UDC	1.0			// [V/V]
-#define GAIN_MEAS_UAC	1.0			// [V/V]
-#define GAIN_MEASIAC	1.0			// [V/A]
+#define GAIN_MEAS_UDC	488.3		// [V/V]
+#define GAIN_MEAS_UAC	400.5		// [V/V]
+#define GAIN_MEAS_IAC	60.61		// [V/A]
+
+
+
 
 /*************************************************************************/
 //  ENUMARATORS
@@ -83,6 +86,11 @@ typedef struct{
 /*************************************************************************/
 /// Lookup table declaration
 double sine_wave[N];
+
+// measuremets
+float udc = 0;
+float uac = 0;
+float iac = 0;
 
 // inverter structure declaration
 myInverterCtrlStruct myInverter;
@@ -149,6 +157,52 @@ void compute_duty_cycle(myInverterCtrlStruct *INV, int idx, float sineAmplitude,
 	}
 }
 
+float ACCurrentMeasProcessing(float ad_volt){
+	float u_diff = ad_volt - ADC_OFFSET;
+	float eq_i = u_diff * GAIN_MEAS_IAC;
+	return eq_i;
+}
+
+float ACVoltageMeasProcessing(float ad_volt){
+	float u_diff = ad_volt - ADC_OFFSET;
+	float eq_uac = u_diff * GAIN_MEAS_UAC;
+	return eq_uac;
+}
+
+float DCVoltageMeasProcessing(float ad_volt){
+	float u_diff = ad_volt - ADC_OFFSET;
+	float eq_udc = u_diff * GAIN_MEAS_UDC;
+	return eq_udc;
+}
+
+void AnalogMeasRoutine(){
+	float u_meas_uac = ad_volt_float[0];	// ADC voltage level ADC1 CH5	rank 1
+	float u_meas_udc = ad_volt_float[1];	// ADC voltage level ADC2 CH14	rank 1
+	float u_meas_iac = ad_volt_float[2];	// ADC voltage level ADC3 CH4	rank 1
+
+	udc = DCVoltageMeasProcessing(u_meas_udc);
+	uac = ACVoltageMeasProcessing(u_meas_uac);
+	iac = ACCurrentMeasProcessing(u_meas_iac);
+
+	// store measurements in memory to export them
+	if( db_cnt_meas<LOG_MEAS_NB) {
+		db_meas[db_cnt_meas++] = u_meas_uac;
+		db_meas[db_cnt_meas++] = u_meas_udc;
+		db_meas[db_cnt_meas++] = u_meas_iac;
+		db_meas[db_cnt_meas++] = udc;
+		db_meas[db_cnt_meas++] = uac;
+		db_meas[db_cnt_meas++] = iac;
+	}
+
+}
+
+void signalsManagmentRoutine(){
+	// Fault handling
+
+	// meas handling
+	AnalogMeasRoutine();
+}
+
 /*************************************************************************/
 //  PUBLIC FUNCTIONS
 /*************************************************************************/
@@ -180,6 +234,7 @@ void initSineLookupTable(){
 	}
 }
 
+// functional test execution function
 void functionalTestRoutine(TmyconvVSI *converter){
 	static int i = 0;
 	static int period_counter = 0;
@@ -187,7 +242,7 @@ void functionalTestRoutine(TmyconvVSI *converter){
 	float udc = U_DC;		// fixed DC voltage value
 	//float udc = u_dc_ref;	// measured DC voltage value
 
-	compute_duty_cycle(*myInverter, i, (float)SINE_AMPL, udc);
+	compute_duty_cycle(&myInverter, i, (float)SINE_AMPL, udc);
 
 	// converter.da used for higher semiconductors
 	// converter.db used for lower semiconductors	- complementary (it is sufficient to control da)
@@ -202,23 +257,5 @@ void functionalTestRoutine(TmyconvVSI *converter){
 		i=0;
 		period_counter++;
 	}
-}
-
-
-
-// duty cycle values update according to sine wave function
-void update_duty_cycle(TmyconvVSI *converter, AmplitudeMode state, int i) {
-
-
-
-
-
-
-
-	// change here to choose the mono phase legs
-    converter->da[0] = da;  // Update leg A
-    converter->da[1] = db;  // Update leg B
-    converter->da[2] = 0;   // Update leg C
-
 }
 

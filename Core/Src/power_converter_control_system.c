@@ -19,6 +19,7 @@
 #include "dab_pwm.h"
 #include "my_solutions.h"
 
+
 #ifdef STM32H743xx
 
 #include "stm32h7xx_hal_adc.h"
@@ -32,6 +33,10 @@
 #endif
 
 #include "my_solutions.h"
+#include "InverterControlFunctions.h"
+
+// define topology configuration
+myInverterConfig inverterConfiguration = CONFIG_A;
 
 // DMA copies values from ADC to this buffer
 
@@ -186,6 +191,8 @@ void ADCCompleteCallback(ADC_HandleTypeDef* hadc)
 		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
 		DisplayMessageInit();
 		StartPWMFan();
+		initInverterManagementStructure(inverterConfiguration);
+		initSineLookupTable();
 		myconvvsi.sm = SMWaitForRun;
 		break;
 
@@ -224,6 +231,8 @@ void ADCCompleteCallback(ADC_HandleTypeDef* hadc)
 			myconvvsi.sm = SMFault;
 		}
 #endif
+
+		functionalTestRoutine(&myconvvsi);
 
 		// call you control function here
 

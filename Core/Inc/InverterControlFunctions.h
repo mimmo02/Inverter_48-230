@@ -17,8 +17,8 @@
 //  ENUMARATORS
 /*************************************************************************/
 typedef enum{
-	CONFIG_A,
-	CONFIG_B
+	CONFIG_A,		// Leg A and Leg B switching with symmetrical control strategy
+	CONFIG_B		// Leg A and Leg C switching with totem pole control strategy (A fast switching, C slow switching)
 }myInverterConfig;
 
 /*************************************************************************/

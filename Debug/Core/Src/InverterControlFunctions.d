@@ -1,5 +1,6 @@
-Core/Src/power_converter_control_system.o: \
- ../Core/Src/power_converter_control_system.c \
+Core/Src/InverterControlFunctions.o: \
+ ../Core/Src/InverterControlFunctions.c \
+ ../Core/Inc/InverterControlFunctions.h \
  ../Core/Inc/power_converter_control_system.h ../Core/Inc/main.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h \
  ../Core/Inc/stm32f7xx_hal_conf.h \
@@ -36,10 +37,9 @@ Core/Src/power_converter_control_system.o: \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h \
  ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h \
- ../Core/Inc/main.h ../Core/Inc/log_meas.h \
- ../Core/Inc/display_uart_console.h ../Core/Inc/dab_pwm.h \
- ../Core/Src/my_solutions.h ../Core/Inc/InverterControlFunctions.h \
- ../Core/Inc/power_converter_control_system.h
+ ../Core/Inc/log_meas.h ../Core/Inc/power_converter_control_system.h \
+ ../Core/Inc/display_uart_console.h
+../Core/Inc/InverterControlFunctions.h:
 ../Core/Inc/power_converter_control_system.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal.h:
@@ -77,10 +77,6 @@ Core/Src/power_converter_control_system.o: \
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_tim_ex.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart.h:
 ../Drivers/STM32F7xx_HAL_Driver/Inc/stm32f7xx_hal_uart_ex.h:
-../Core/Inc/main.h:
 ../Core/Inc/log_meas.h:
-../Core/Inc/display_uart_console.h:
-../Core/Inc/dab_pwm.h:
-../Core/Src/my_solutions.h:
-../Core/Inc/InverterControlFunctions.h:
 ../Core/Inc/power_converter_control_system.h:
+../Core/Inc/display_uart_console.h:

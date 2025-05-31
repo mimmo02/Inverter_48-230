@@ -1,3 +1,4 @@
+"./Core/Src/InverterControlFunctions.o"
 "./Core/Src/display_uart_console.o"
 "./Core/Src/ll_can.o"
 "./Core/Src/log_meas.o"

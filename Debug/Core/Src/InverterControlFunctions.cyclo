@@ -1,0 +1,4 @@
+../Core/Src/InverterControlFunctions.c:94:6:compute_duty_cycle	18
+../Core/Src/InverterControlFunctions.c:156:6:initInverterManagementStructure	2
+../Core/Src/InverterControlFunctions.c:177:6:initSineLookupTable	2
+../Core/Src/InverterControlFunctions.c:184:6:functionalTestRoutine	2
