@@ -95,6 +95,7 @@ float iac = 0;
 // inverter structure declaration
 myInverterCtrlStruct myInverter;
 
+
 /*************************************************************************/
 //  PRIVATE FUNCTIONS
 /*************************************************************************/
@@ -196,9 +197,19 @@ void AnalogMeasRoutine(){
 
 }
 
+void FaultHandlingRoutine(myInverterCtrlStruct *INV){
+	if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_6)){				// gate driver fault
+		INV->system_fault = GD_FAULT;
+	}
+	if(HAL_GPIO_ReadPin(GPIOD,GPIO_PIN_7)){				// over current meas fault
+		INV->system_fault = CURRENT_MEAS_OCF;
+	}
+}
+
+
 void signalsManagmentRoutine(){
 	// Fault handling
-
+	FaultHandlingRoutine(&myInverter);
 	// meas handling
 	AnalogMeasRoutine();
 }
@@ -238,6 +249,14 @@ void initSineLookupTable(){
 void functionalTestRoutine(TmyconvVSI *converter){
 	static int i = 0;
 	static int period_counter = 0;
+
+	// signals handling
+	signalsManagmentRoutine();
+
+	/*
+	if(myInverter.system_fault != NO_ERROR)
+		converter->sm = SMFault;
+	 */
 
 	float udc = U_DC;		// fixed DC voltage value
 	//float udc = u_dc_ref;	// measured DC voltage value

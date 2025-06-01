@@ -188,7 +188,8 @@ void ADCCompleteCallback(ADC_HandleTypeDef* hadc)
 	case SMInit:
 		myconvvsi.k = 0;
 		InitControlProcess();
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_RESET);		// reset cmd
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_4, GPIO_PIN_RESET);		// set 0 to Vi- (not used)
 		DisplayMessageInit();
 		StartPWMFan();
 		initInverterManagementStructure(inverterConfiguration);
@@ -199,7 +200,7 @@ void ADCCompleteCallback(ADC_HandleTypeDef* hadc)
 	// Wait for the user to give the start order from the PC via USB and UART
 
 	case SMWaitForRun:
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_3, GPIO_PIN_SET);			// reset clear cmd
 		if( myconvvsi.signal_run) {
 			myconvvsi.sm = SMStartPWM;
 			myconvvsi.k = 0;
