@@ -194,7 +194,6 @@ void AnalogMeasRoutine(){
 		db_meas[db_cnt_meas++] = uac;
 		db_meas[db_cnt_meas++] = iac;
 	}
-
 }
 
 void FaultHandlingRoutine(myInverterCtrlStruct *INV){
@@ -263,12 +262,22 @@ void functionalTestRoutine(TmyconvVSI *converter){
 
 	compute_duty_cycle(&myInverter, i, (float)SINE_AMPL, udc);
 
+	// Fixed duty cycle test
+	myInverter.d_a = 0.90;
+	myInverter.d_b = 0.75;
+	myInverter.d_c = 0.60;
+
 	// converter.da used for higher semiconductors
 	// converter.db used for lower semiconductors	- complementary (it is sufficient to control da)
 
-	converter->da[0] = myInverter.d_a;  // Update leg A
-	converter->da[1] = myInverter.d_b;  // Update leg B
-	converter->da[2] = myInverter.d_c;  // Update leg C
+	converter->da[0] = 1.0 - myInverter.d_a;  // Update leg A
+	converter->da[1] = 1.0 - myInverter.d_b;  // Update leg B
+	converter->da[2] = 1.0 - myInverter.d_c;  // Update leg C
+
+	converter->db[0] = 1.0 - myInverter.d_a;  // Update leg A
+	converter->db[1] = 1.0 - myInverter.d_b;  // Update leg B
+	converter->db[2] = 1.0 - myInverter.d_c;  // Update leg C
+
 
 	// index and periods counter management
 	i++;
