@@ -26,7 +26,7 @@
 // time and management constants
 #define FREQ_PWM	10000   	// [Hz]
 #define FREQ_SMPL	10000		// [Hz]
-#define FREQ_SINE	50			// [Hz]
+#define FREQ_SINE	250			// [Hz]
 #define T_PWM		1/FREQ_PWM  // [s]
 #define T_SMPL		1/FREQ_SMPL	// [s]
 #define T_SINE		1/FREQ_SINE // [s]
@@ -35,8 +35,8 @@
 // Electrical constants
 #define R_LOAD		5.0			// [ohm]
 #define L_LOAD		0.000160	// [H]
-#define U_DC		10			// [V]
-#define SINE_AMPL	5.0			// [V]
+#define U_DC		10.0		// [V]
+#define SINE_AMPL	8.0			// [V]
 #define I_PEAK		4			// [A]
 #define Z_LOAD		sqrt(pow(R_LOAD,2)+pow(2*M_PI*FREQ_SINE*L_LOAD,2))	// [ohm] Load impedance
 
@@ -104,31 +104,31 @@ void compute_duty_cycle(myInverterCtrlStruct *INV, int idx, float sineAmplitude,
 	INV->delta_d = (sineAmplitude*sine_wave[idx])/udc;
 	if(INV->system_ctrl_strategy == SYM){								// symmetrical control strategy
 		if(INV->Leg_B == true && INV->Leg_C == false){					// leg A and leg B switching
-			INV->d_a = 0.5 + 0.5*INV->delta_d;
-			INV->d_b = 0.5 - 05*INV->delta_d;
+			INV->d_a = 0.5 + (0.5*INV->delta_d);
+			INV->d_b = 0.5 - (0.5*INV->delta_d);
 			INV->d_c = 0.0;
 		}
 		else if(INV->Leg_B == false && INV->Leg_C == true){				// leg A and leg C switching
 			INV->d_a = 0.5 + 0.5*INV->delta_d;
-			INV->d_c = 0.5 - 05*INV->delta_d;
+			INV->d_c = 0.5 - 0.5*INV->delta_d;
 			INV->d_b = 0.0;
 		}
 	}
 	else{																// totem pole control strategy
 		if(INV->Leg_B == true && INV->Leg_C == false){					// leg A and leg B switching
-			if(INV->delta_d > 0){										// positive half-wave
+			if(INV->delta_d > 0.0){										// positive half-wave
 				INV->d_a = INV->delta_d;
 				INV->d_b = 0.0;
 				INV->d_c = 0.0;
 			}
 			else{														// negative half-wave
-				INV->d_a = 1 + INV->delta_d;
+				INV->d_a = 1.0 + INV->delta_d;
 				INV->d_b = 1.0;
 				INV->d_c = 0.0;
 			}
 		}
 		else if(INV->Leg_B == false && INV->Leg_C == true){				// leg A and leg C switching
-			if(INV->delta_d > 0){										// positive half-wave
+			if(INV->delta_d > 0.0){										// positive half-wave
 				INV->d_a = INV->delta_d;
 				INV->d_c = 0.0;
 				INV->d_b = 0.0;
@@ -263,9 +263,9 @@ void functionalTestRoutine(TmyconvVSI *converter){
 	compute_duty_cycle(&myInverter, i, (float)SINE_AMPL, udc);
 
 	// Fixed duty cycle test
-	myInverter.d_a = 0.90;
-	myInverter.d_b = 0.75;
-	myInverter.d_c = 0.60;
+	//myInverter.d_a = 0.90;
+	//myInverter.d_b = 0.75;
+	//myInverter.d_c = 0.60;
 
 	// converter.da used for higher semiconductors
 	// converter.db used for lower semiconductors	- complementary (it is sufficient to control da)

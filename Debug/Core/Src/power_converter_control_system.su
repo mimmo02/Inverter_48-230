@@ -1,10 +1,10 @@
-../Core/Src/power_converter_control_system.c:328:6:ADCErrorCallback	0	static
-../Core/Src/power_converter_control_system.c:336:6:ADCHalfCompleteCallback	0	static
-../Core/Src/power_converter_control_system.c:56:6:StartPWMFan	8	static
+../Core/Src/power_converter_control_system.c:56:6:StartPWMFan	16	static
 ../Core/Src/power_converter_control_system.c:65:6:StartPWM	8	static
 ../Core/Src/power_converter_control_system.c:90:6:StopPWM	8	static
-../Core/Src/power_converter_control_system.c:168:6:ADCCompleteCallback	32	static
 ../Core/Src/power_converter_control_system.c:112:6:InitConverterControlSystemPeripherals	8	static
-../Core/Src/power_converter_control_system.c:151:6:InitControlProcess	0	static
-../Core/Src/power_converter_control_system.c:346:6:HAL_ADC_ConvCpltCallback	0	static
-../Core/Src/power_converter_control_system.c:353:6:LogMeasurementsExample	0	static
+../Core/Src/power_converter_control_system.c:151:6:InitControlProcess	16	static
+../Core/Src/power_converter_control_system.c:168:6:ADCCompleteCallback	32	static
+../Core/Src/power_converter_control_system.c:328:6:ADCErrorCallback	16	static
+../Core/Src/power_converter_control_system.c:336:6:ADCHalfCompleteCallback	16	static
+../Core/Src/power_converter_control_system.c:346:6:HAL_ADC_ConvCpltCallback	16	static
+../Core/Src/power_converter_control_system.c:353:6:LogMeasurementsExample	16	static

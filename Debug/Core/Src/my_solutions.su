@@ -1,2 +1,2 @@
-../Core/Src/my_solutions.c:14:6:RunControlAtEachSamplingPeriodEx1	0	static
-../Core/Src/my_solutions.c:20:6:RunControlAtEachSamplingPeriodEx2	0	static
+../Core/Src/my_solutions.c:14:6:RunControlAtEachSamplingPeriodEx1	4	static
+../Core/Src/my_solutions.c:20:6:RunControlAtEachSamplingPeriodEx2	4	static

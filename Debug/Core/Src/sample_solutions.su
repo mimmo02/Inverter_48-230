@@ -1,4 +1,4 @@
 ../Core/Src/sample_solutions.c:18:6:RunControlAtEachSamplingPeriod1	8	static
 ../Core/Src/sample_solutions.c:33:6:LogMeasurementsAtEachSamplingPeriod1	4	static
-../Core/Src/sample_solutions.c:48:6:RunControlAtEachSamplingPeriod2	32	static
-../Core/Src/sample_solutions.c:76:6:LogMeasurementsAtEachSamplingPeriod2	16	static
+../Core/Src/sample_solutions.c:48:6:RunControlAtEachSamplingPeriod2	16	static
+../Core/Src/sample_solutions.c:76:6:LogMeasurementsAtEachSamplingPeriod2	4	static

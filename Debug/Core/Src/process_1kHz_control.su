@@ -1,2 +1,2 @@
-../Core/Src/process_1kHz_control.c:22:6:HAL_IncTick	16	static
-../Core/Src/process_1kHz_control.c:45:6:IdleProcess	0	static
+../Core/Src/process_1kHz_control.c:22:6:HAL_IncTick	8	static
+../Core/Src/process_1kHz_control.c:45:6:IdleProcess	4	static

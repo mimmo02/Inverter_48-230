@@ -1,10 +1,10 @@
 ../Core/Src/InverterControlFunctions.c:103:6:compute_duty_cycle	32	static
-../Core/Src/InverterControlFunctions.c:161:7:ACCurrentMeasProcessing	8	static
-../Core/Src/InverterControlFunctions.c:167:7:ACVoltageMeasProcessing	8	static
-../Core/Src/InverterControlFunctions.c:173:7:DCVoltageMeasProcessing	8	static
-../Core/Src/InverterControlFunctions.c:179:6:AnalogMeasRoutine	40	static
-../Core/Src/InverterControlFunctions.c:199:6:FaultHandlingRoutine	8	static
+../Core/Src/InverterControlFunctions.c:161:7:ACCurrentMeasProcessing	24	static
+../Core/Src/InverterControlFunctions.c:167:7:ACVoltageMeasProcessing	24	static
+../Core/Src/InverterControlFunctions.c:173:7:DCVoltageMeasProcessing	24	static
+../Core/Src/InverterControlFunctions.c:179:6:AnalogMeasRoutine	24	static
+../Core/Src/InverterControlFunctions.c:199:6:FaultHandlingRoutine	16	static
 ../Core/Src/InverterControlFunctions.c:209:6:signalsManagmentRoutine	8	static
-../Core/Src/InverterControlFunctions.c:220:6:initInverterManagementStructure	0	static
-../Core/Src/InverterControlFunctions.c:241:6:initSineLookupTable	32	static
+../Core/Src/InverterControlFunctions.c:220:6:initInverterManagementStructure	16	static
+../Core/Src/InverterControlFunctions.c:241:6:initSineLookupTable	16	static
 ../Core/Src/InverterControlFunctions.c:248:6:functionalTestRoutine	24	static
