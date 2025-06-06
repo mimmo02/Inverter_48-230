@@ -215,7 +215,7 @@ void ADCCompleteCallback(ADC_HandleTypeDef* hadc)
 
 			// Wait 10 periods for bootstrap capacitors to charge before running
 
-		} else if( myconvvsi.k > 10) {
+		} else if( myconvvsi.k > 800) { // 10 -> 200
 			myconvvsi.k = 0;
 			myconvvsi.sm = SMRun;
 		}

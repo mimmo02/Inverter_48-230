@@ -26,7 +26,7 @@
 // time and management constants
 #define FREQ_PWM	10000   	// [Hz]
 #define FREQ_SMPL	10000		// [Hz]
-#define FREQ_SINE	250			// [Hz]
+#define FREQ_SINE	500			// [Hz]
 #define T_PWM		1/FREQ_PWM  // [s]
 #define T_SMPL		1/FREQ_SMPL	// [s]
 #define T_SINE		1/FREQ_SINE // [s]
@@ -47,7 +47,9 @@
 #define GAIN_MEAS_IAC	60.61		// [V/A]
 
 
-
+// test definition
+//#define CONFIGA_FIX_TEST
+//#define CONFIGB_FIX_TEST
 
 /*************************************************************************/
 //  ENUMARATORS
@@ -140,6 +142,19 @@ void compute_duty_cycle(myInverterCtrlStruct *INV, int idx, float sineAmplitude,
 			}
 		}
 	}
+
+#ifdef CONFIGA_FIX_TEST
+	// Fixed duty cycle test - config A (to comment after testing)
+	myInverter.d_a = 0.90;
+	myInverter.d_b = 0.75;
+	myInverter.d_c = 0.00;
+#endif
+#ifdef CONFIGB_FIX_TEST
+	// Fixed duty cycle test - config B (to comment after testing)
+	myInverter.d_a = 0.20;
+	myInverter.d_b = 0.00;
+	myInverter.d_c = 0.40;
+#endif
 
 	// duty cycle value saturation
 	if(INV->d_a > DUTY_CYCLE_MAX_VALUE || INV->d_a < DUTY_CYCLE_MIN_VALUE || INV->d_b > DUTY_CYCLE_MAX_VALUE || INV->d_a < DUTY_CYCLE_MIN_VALUE || INV->d_c > DUTY_CYCLE_MAX_VALUE || INV->d_c < DUTY_CYCLE_MIN_VALUE){
@@ -262,21 +277,17 @@ void functionalTestRoutine(TmyconvVSI *converter){
 
 	compute_duty_cycle(&myInverter, i, (float)SINE_AMPL, udc);
 
-	// Fixed duty cycle test
-	//myInverter.d_a = 0.90;
-	//myInverter.d_b = 0.75;
-	//myInverter.d_c = 0.60;
-
 	// converter.da used for higher semiconductors
-	// converter.db used for lower semiconductors	- complementary (it is sufficient to control da)
+	// converter.db used for lower semiconductors
 
-	converter->da[0] = 1.0 - myInverter.d_a;  // Update leg A
-	converter->da[1] = 1.0 - myInverter.d_b;  // Update leg B
-	converter->da[2] = 1.0 - myInverter.d_c;  // Update leg C
+	converter->da[0] = myInverter.d_a;  // Update leg A
+	converter->da[1] = myInverter.d_b;  // Update leg B
+	converter->da[2] = myInverter.d_c;  // Update leg C
 
-	converter->db[0] = 1.0 - myInverter.d_a;  // Update leg A
-	converter->db[1] = 1.0 - myInverter.d_b;  // Update leg B
-	converter->db[2] = 1.0 - myInverter.d_c;  // Update leg C
+
+	converter->db[0] = myInverter.d_a;  // Update leg A
+	converter->db[1] = myInverter.d_b;  // Update leg B
+	converter->db[2] = myInverter.d_c;  // Update leg C
 
 
 	// index and periods counter management
