@@ -74,8 +74,8 @@ typedef struct{
 
 
 #define NB_AD_CONV 3
-#define AD_RANK 6
-#define AD_RANK_3 9
+#define AD_RANK 1
+#define AD_RANK_3 1
 #define NB_AD_VALUES (NB_AD_CONV*AD_RANK+AD_RANK_3-AD_RANK)
 
 

@@ -36,7 +36,7 @@
 #include "InverterControlFunctions.h"
 
 // define topology configuration
-myInverterConfig inverterConfiguration = CONFIG_B;
+myInverterConfig inverterConfiguration = CONFIG_A;
 
 // DMA copies values from ADC to this buffer
 

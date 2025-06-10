@@ -64,7 +64,7 @@ void RunControlAtEachSamplingPeriod2()
 
 	dac[0] = (0.5+0.5*0.98*my_triangle)*4095.0;
 
-	x = ad_volt_float[4];
+	x = ad_volt_float[3];
 	y += 0.1*(x-y);
 
 	dac[1] = y/3.3*4095.0;

@@ -26,26 +26,39 @@
 // time and management constants
 #define FREQ_PWM	10000   	// [Hz]
 #define FREQ_SMPL	10000		// [Hz]
-#define FREQ_SINE	500			// [Hz]
+#define FREQ_SINE	100			// [Hz]
 #define T_PWM		1/FREQ_PWM  // [s]
 #define T_SMPL		1/FREQ_SMPL	// [s]
 #define T_SINE		1/FREQ_SINE // [s]
 #define N	FREQ_SMPL/FREQ_SINE	// N = number of samples, T_SINE = N * T_SAMPLE
 
 // Electrical constants
-#define R_LOAD		5.0			// [ohm]
-#define L_LOAD		0.000160	// [H]
+#define R_LOAD		1.8			// [ohm]
+#define L_LOAD		(0.000512*2.0)	// [H]
 #define U_DC		10.0		// [V]
-#define SINE_AMPL	8.0			// [V]
-#define I_PEAK		4			// [A]
+#define I_PEAK		4.0		// [A]
 #define Z_LOAD		sqrt(pow(R_LOAD,2)+pow(2*M_PI*FREQ_SINE*L_LOAD,2))	// [ohm] Load impedance
+//#define SINE_AMPL	8.0			// [V]	// fix modulation index
+#define SINE_AMPL 	(I_PEAK*Z_LOAD)
 
 // analog measurement constants
-#define ADC_OFFSET	    1.65		// [V] (from PeLab interface PCB - differential measurement)
-#define GAIN_MEAS_UDC	488.3		// [V/V]
-#define GAIN_MEAS_UAC	400.5		// [V/V]
-#define GAIN_MEAS_IAC	60.61		// [V/A]
+// 	CALCULATED ////////////////////////////////////////////////
+#define ADC_OFFSET			1.65	//[V]
+//#define GAIN_MEAS_UDC		488.3		// [V/V]
+#define GAIN_MEAS_UAC		400.5		// [V/V]
+//#define GAIN_MEAS_IAC		60.61		// [V/A]
 
+
+// MEASURED ///////////////////////////////////////////////////
+#define ADC_IAC_OFFSET		1.65		// [V]
+#define ADC_UDC_OFFSET		1.88	// [V] (from PeLab interface PCB - differential measurement)
+//#define ADC_UAC_OFFSET 		1.65	// [V]
+
+#define GAIN_MEAS_UDC		955.11		// [V/V]
+//#define GAIN_MEAS_UAC		400.5		// [V/V]
+#define GAIN_MEAS_IAC		50.69		// [V/A]
+
+#define FILTER_SIZE 20
 
 // test definition
 //#define CONFIGA_FIX_TEST
@@ -93,6 +106,12 @@ double sine_wave[N];
 float udc = 0;
 float uac = 0;
 float iac = 0;
+
+// meas sapmle for filtering
+float udc_buffer[FILTER_SIZE] = {0.0f};
+float uac_buffer[FILTER_SIZE] = {0.0f};
+float iac_buffer[FILTER_SIZE] = {0.0f};
+int sample_idx = 0;
 
 // inverter structure declaration
 myInverterCtrlStruct myInverter;
@@ -173,21 +192,37 @@ void compute_duty_cycle(myInverterCtrlStruct *INV, int idx, float sineAmplitude,
 	}
 }
 
+// Low pas filter
+float low_pass_filter(float sample_act, float *sample_buffer) {
+    sample_buffer[sample_idx] = sample_act;
+    sample_idx = (sample_idx + 1) % FILTER_SIZE;
+
+    float sum = 0.0f;
+    for (int i = 0; i < FILTER_SIZE; i++) {
+        sum += sample_buffer[i];
+    }
+
+    return sum / FILTER_SIZE;
+}
+
 float ACCurrentMeasProcessing(float ad_volt){
-	float u_diff = ad_volt - ADC_OFFSET;
+	float u_diff = ad_volt - ADC_IAC_OFFSET;
 	float eq_i = u_diff * GAIN_MEAS_IAC;
+	//eq_i = low_pass_filter(eq_i,iac_buffer);
 	return eq_i;
 }
 
 float ACVoltageMeasProcessing(float ad_volt){
 	float u_diff = ad_volt - ADC_OFFSET;
 	float eq_uac = u_diff * GAIN_MEAS_UAC;
+	//eq_uac = low_pass_filter(eq_uac,uac_buffer);
 	return eq_uac;
 }
 
 float DCVoltageMeasProcessing(float ad_volt){
-	float u_diff = ad_volt - ADC_OFFSET;
+	float u_diff = ad_volt - ADC_UDC_OFFSET;
 	float eq_udc = u_diff * GAIN_MEAS_UDC;
+	eq_udc = low_pass_filter(eq_udc,udc_buffer);
 	return eq_udc;
 }
 
@@ -196,17 +231,17 @@ void AnalogMeasRoutine(){
 	float u_meas_udc = ad_volt_float[1];	// ADC voltage level ADC2 CH14	rank 1
 	float u_meas_iac = ad_volt_float[2];	// ADC voltage level ADC3 CH4	rank 1
 
-	udc = DCVoltageMeasProcessing(u_meas_udc);
 	uac = ACVoltageMeasProcessing(u_meas_uac);
+	udc = DCVoltageMeasProcessing(u_meas_udc);
 	iac = ACCurrentMeasProcessing(u_meas_iac);
 
 	// store measurements in memory to export them
-	if( db_cnt_meas<LOG_MEAS_NB) {
+	if( (db_cnt_meas-1)<LOG_MEAS_NB) {
 		db_meas[db_cnt_meas++] = u_meas_uac;
 		db_meas[db_cnt_meas++] = u_meas_udc;
 		db_meas[db_cnt_meas++] = u_meas_iac;
-		db_meas[db_cnt_meas++] = udc;
 		db_meas[db_cnt_meas++] = uac;
+		db_meas[db_cnt_meas++] = udc;
 		db_meas[db_cnt_meas++] = iac;
 	}
 }
@@ -274,17 +309,13 @@ void functionalTestRoutine(TmyconvVSI *converter){
 
 	float udc = U_DC;		// fixed DC voltage value
 	//float udc = u_dc_ref;	// measured DC voltage value
-
 	compute_duty_cycle(&myInverter, i, (float)SINE_AMPL, udc);
 
-	// converter.da used for higher semiconductors
-	// converter.db used for lower semiconductors
-
+	// converter.da used for higher CHx semiconductors
 	converter->da[0] = myInverter.d_a;  // Update leg A
 	converter->da[1] = myInverter.d_b;  // Update leg B
 	converter->da[2] = myInverter.d_c;  // Update leg C
-
-
+	// converter.db used for lower CHxN semiconductors
 	converter->db[0] = myInverter.d_a;  // Update leg A
 	converter->db[1] = myInverter.d_b;  // Update leg B
 	converter->db[2] = myInverter.d_c;  // Update leg C
